@@ -1,0 +1,81 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.team-section{
+    height: 100vh;
+    background-color: beige;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+
+}
+
+
+
+
+.team-section h1{
+    margin-bottom: 30px;
+}
+
+.team-container{
+    /* width: 80%; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+
+}
+
+
+.card{
+    background-color: white;
+    /* width: 40%; */
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid black;
+    border-radius: 11px;
+    
+
+}
+
+
+.profile{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card h2{
+    font-size: 20px;
+}
+
+.card p{
+    color: red;
+}
+
+.card button{
+    padding: 10px 20px;
+    border:none;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #333;
+    color: white;
+}
