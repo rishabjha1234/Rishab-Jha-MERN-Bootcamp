@@ -126,7 +126,12 @@ const App = () => {
                 <h1>Description: {item.description}</h1>
                 <h1 className="font-bold">Category: {item.category}</h1>
                 <h1 className="text-red-600 font-bold">Price: {item.price}</h1>
-                <button className="text-xl p-2 border border-red-600 rounded-lg flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100 bg-amber-400" onClick={handleAddToCart}>Add to Cart</button>
+                <button
+                  className="text-xl p-2 border border-red-600 rounded-lg flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100 bg-amber-400"
+                  onClick={handleAddToCart}
+                >
+                  Add to Cart
+                </button>
               </div>
             );
           })}
