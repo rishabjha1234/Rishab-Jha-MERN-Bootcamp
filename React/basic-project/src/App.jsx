@@ -3,28 +3,30 @@ import axios from "axios";
 
 const App = () => {
   const [productData, setProductData] = useState([]);
-
-  const [newFilteredProductData, setNewFilterProductData] = useState([]);
-
-  const [searchProduct, setSearchProduct] = useState("");
-
   const [limit, setLimit] = useState(0);
+  const [searchProduct, setSearchProduct] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-  console.log("limit: ", limit);
-
-  async function getProduct() {
+  async function getProducts() {
     const response = await axios.get(
       `https://dummyjson.com/products?limit=${limit}`,
     );
-    setNewFilterProductData(response.data.products);
     setProductData(response.data.products);
+    setFilteredProducts(response.data.products);
   }
 
-  useEffect(() => {
-    getProduct();
-  }, [limit]);
+  console.log("A");
 
-  function handleSearch() {
+  useEffect(
+    function () {
+      console.log("B");
+
+      getProducts();
+    },
+    [limit],
+  );
+
+  function handleSearchFunctionality() {
     const filteredProductsData = productData.filter((eachProductItem) => {
       return (
         eachProductItem.title
@@ -34,7 +36,7 @@ const App = () => {
           .toLowerCase()
           .includes(searchProduct.toLowerCase()) ||
         eachProductItem.tags.some((item) =>
-          item.toLowerCase().includes(searchProduct),
+          item.toLowerCase().includes(searchProduct.toLowerCase()),
         ) ||
         (eachProductItem.brand || "")
           .toLowerCase()
@@ -42,102 +44,84 @@ const App = () => {
       );
     });
 
-    console.log("Filter:", filteredProductsData);
-
-    setNewFilterProductData(filteredProductsData);
+    setFilteredProducts(filteredProductsData);
   }
 
-  function handleAddToCart() {}
-
   return (
-    <>
-      <div className="w-full p-6">
-        <h1 className="text-2xl font-bold text-center mt-12 p-6">
-          Ecommerce Website
-        </h1>
+    <div className="w-full p-6">
+      <h1 className="text-2xl text-center font-bold">Ecommerce Application</h1>
 
-        <div className="flex justify-end">
-          <button className="text-xl p-2 border border-red-600 rounded-lg flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100">
-            🛒 Add to Cart{" "}
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500  text-sm font-bold text-white leading-none">
-              0
-            </span>
-          </button>
+      <div className="flex  justify-between items-center  p-6">
+        <div className="flex flex-col gap-2">
+          <label className="text-xl font-bold text-black" htmlFor="">
+            Enter limit of products
+          </label>
+          <input
+            value={limit}
+            type="number"
+            onChange={(e) => {
+              setLimit(e.target.value);
+            }}
+            className="text-xl border border-black font-bold p-2"
+            placeholder="Enter no of limit:"
+          />
         </div>
 
-        <div className="flex flex-col justify-center items-center gap-4">
-          <div className="flex justify-center items-center gap-12">
-            <div className="flex flex-col justify-center items-center gap-4">
-              <label className="text-xl font-bold " htmlFor="">
-                Enter No of Product you want
-              </label>
-              <input
-                value={limit}
-                onChange={(e) => {
-                  setLimit(e.target.value);
-                }}
-                className="text-xl font-bold p-2 border border-b-black"
-                type="number"
-                placeholder="Enter Limit of Product"
-              />
-            </div>
+        <div className="flex justify-center items-center">
+          <h1 className="text-xl text-black font-bold border border-black p-4">
+            Total Product Length: {filteredProducts.length}
+          </h1>
+        </div>
 
-            <div>
-              <input
-                className="text-xl font-bold p-2 border border-b-black"
-                type="text"
-                name=""
-                id=""
-                value={searchProduct}
-                placeholder="Please search product"
-                onChange={(e) => {
-                  setSearchProduct(e.target.value);
-                }}
-              />
-              <button
-                onClick={handleSearch}
-                className="m-2 p-4 border border-b-black bg-red-400 cursor-pointer rounded-xl"
-              >
-                Search
-              </button>
-            </div>
+        <div className="flex justify-center items-center gap-4">
+          <div className="flex flex-col justify-center items-center">
+            <label htmlFor="">Search your product Item</label>
+            <input
+              value={searchProduct}
+              onChange={(e) => {
+                setSearchProduct(e.target.value);
+              }}
+              type="text"
+              className="text-xl border border-black font-bold p-2"
+            />
           </div>
 
-          <p className="text-xl font-bold">
-            Total Number of Products: {newFilteredProductData.length}
-          </p>
-        </div>
-
-        <div className="flex justify-center items-center flex-wrap gap-12 mt-12">
-          {newFilteredProductData.map((item) => {
-            return (
-              <div
-                key={item.id}
-                className="w-80 flex justify-center items-center flex-col border border-b-black gap-2 p-4"
-              >
-                <img
-                  width={200}
-                  height={100}
-                  src={item.images[0]}
-                  alt="product image"
-                />
-                <h1>Title: {item.title}</h1>
-
-                <h1>Description: {item.description}</h1>
-                <h1 className="font-bold">Category: {item.category}</h1>
-                <h1 className="text-red-600 font-bold">Price: {item.price}</h1>
-                <button
-                  className="text-xl p-2 border border-red-600 rounded-lg flex justify-center items-center gap-2 cursor-pointer hover:bg-gray-100 bg-amber-400"
-                  onClick={handleAddToCart}
-                >
-                  Add to Cart
-                </button>
-              </div>
-            );
-          })}
+          <button
+            onClick={handleSearchFunctionality}
+            className="text-red-600 font-bold border border-red-600 bg-yellow-400 p-2 mt-6 rounded-xl flex justify-center items-center cursor-pointer hover:bg-amber-100 "
+          >
+            🔎 Search
+          </button>
         </div>
       </div>
-    </>
+
+      <div className="flex  flex-wrap justify-center items-center mt-12 gap-12 ">
+        {filteredProducts.map((eachProductItem) => {
+          return (
+            <div className="w-80 border border-black flex flex-col justify-center items-center p-4 gap-2">
+              <img
+                width={200}
+                height={100}
+                src={eachProductItem.images[0]}
+                alt=""
+              />
+              <h1 className="font-bold">Title: {eachProductItem.title}</h1>
+              <h1 className="">Description: {eachProductItem.description}</h1>
+              <p className="text-red-600 font-bold">
+                Category: {eachProductItem.category}
+              </p>
+              <p className="text-red-600 font-bold">
+                💲 Price: {eachProductItem.price}
+              </p>
+
+              <button className="p-2 border border-red-600 font-bold rounded-xl hover:bg-amber-100 bg-yellow-200 cursor-pointer">
+                Add to Cart
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
