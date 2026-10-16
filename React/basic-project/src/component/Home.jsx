@@ -5,8 +5,6 @@ import { addToCart } from "../features/cart/cartSlice";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  "use no memo";
-
   const [limit, setLimit] = useState(0);
 
   const [searchProduct, setSearchProduct] = useState("");
